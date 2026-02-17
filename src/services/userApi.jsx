@@ -1,4 +1,4 @@
-const BASE_URL = 'https://6992be128f29113acd3e8981.mockapi.io'
+const BASE_URL = 'https://6992be128f29113acd3e8981.mockapi.io/users'
 
 export const getUsers = async () => {
     try {

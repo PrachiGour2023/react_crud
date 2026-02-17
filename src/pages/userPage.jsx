@@ -4,6 +4,7 @@ import { Container, Form, Row, Spinner, Col } from 'react-bootstrap'
 import InputField from '../components/inputField'
 import { Card, Button } from 'react-bootstrap'
 import UserCard from '../components/userCard'
+import FormBuilder from '../components/formBuilder'
 import { createUser, getUsers, getUserById, updateUser, deleteUser } from '../services/userApi'
 
 function UserFormPage() {
@@ -28,6 +29,14 @@ function UserFormPage() {
   useEffect(() => {
     fetchUsers()
   }, [])
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setInput((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,50 +112,9 @@ function UserFormPage() {
             <Card.Body>
               <h4 className="mb-4 text-center">User Information</h4>
               <Form noValidate validated={validated} onSubmit={isEditMode ? handleUpdate : handleSubmit}>
-                <InputField label="First Name"
-                  placeholder="Enter your first name"
-                  type="text"
-                  name="firstname"
-                  value={input.firstname || ''}
-                  onChange={(e) => setInput({ ...input, firstname: e.target.value })}
-                  required={true}
-                  minLength={3}
-                  maxLength={20}
-                  pattern="^[A-Za-z]+$"
-                  errorMessage="First name should be 3-20 characters long and contain only letters."
-                />
-
-                <InputField label="Last Name"
-                  placeholder="Enter your last name"
-                  type="text"
-                  name="lastname"
-                  value={input.lastname || ''}
-                  onChange={(e) => setInput({ ...input, lastname: e.target.value })}
-                  required={true}
-                  minLength={3}
-                  maxLength={20}
-                  pattern="^[A-Za-z]+$"
-                  errorMessage="Last name should be 3-20 characters long and contain only letters."
-                />
-                <InputField label="Email"
-                  placeholder="Enter your email"
-                  type="email"
-                  name="email"
-                  value={input.email || ''}
-                  onChange={(e) => setInput({ ...input, email: e.target.value })}
-                  required={true}
-                  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                  errorMessage="Please enter a valid email address."
-                />
-                <InputField label="Phone Number"
-                  placeholder="Enter your phone number"
-                  type="tel"
-                  name="phone"
-                  value={input.phone || ''}
-                  onChange={(e) => setInput({ ...input, phone: e.target.value })}
-                  required={true}
-                  pattern="^\d{10}$"
-                  errorMessage="Phone number should be 10 digits long."
+                <FormBuilder
+                  formData={input}
+                  onChange={handleInputChange}
                 />
                 <Button className='w-100' variant="success" type='submit'>
                   {isLoading ? <Spinner animation="border" size="sm" variant="light" /> : <span>{isEditMode ? "Update" : "Submit"}</span>}
